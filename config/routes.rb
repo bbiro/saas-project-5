@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :tenants do
+    resources :projects
+  end
+  resources :projects
   root 'home#index'
   resources :members
     

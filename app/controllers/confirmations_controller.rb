@@ -1,19 +1,13 @@
 class ConfirmationsController < Milia::ConfirmationsController
 
-  private
-
-  def set_confirmable()
-
-    @confirmable = User.find_or_initialize_with_error_by(:confirmation_token, params[:contirmation_token])
-    end
-
       # PUT /resource/confirmation
   # entered ONLY on invite-members usage to set password at time of confirmation
   def update
+    byebug
     if @confirmable.attempt_set_password(user_params)
 
         # this section is patterned off of devise 3.2.5 confirmations_controller#show
-
+        byebug
         self.resource = resource_class.confirm_by_token(params[:confirmation_token])
         yield resource if block_given?
 
@@ -37,6 +31,7 @@ class ConfirmationsController < Milia::ConfirmationsController
   # GET /resource/confirmation?confirmation_token=abcdef
   # entered on new sign-ups and invite-members
   def show
+    byebug
     if @confirmable.new_record?  ||
        !::Milia.use_invite_member ||
        @confirmable.skip_confirm_change_password
@@ -65,5 +60,14 @@ class ConfirmationsController < Milia::ConfirmationsController
     else
       new_user_session_path
     end
+  end
+
+  private
+
+  def set_confirmable()
+    byebug
+    original_token = params[:confirmation_token]
+    confirmation_token = Devise.token_generator.digest(User, :confirmation_token, original_token)
+    @confirmable = User.find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
   end
 end

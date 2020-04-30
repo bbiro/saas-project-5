@@ -1,6 +1,6 @@
 <h1>Create password</h1>
 
-<%= form_for(resource, as: resource_name, url: update_user_confirmation_path, html: { method: :put, :class => "form-login" }) do |f| %>
+<%= form_for(resource, as: resource_name, url: update_user_confirmation_path, html: { method: :put, :class => "form login" }) do |f| %>
   <%= bootstrap_devise_error_messages! %>
   <%= hidden_field_tag :confirmation_token, @confirmation_token %>
   <div class="form-group">
@@ -16,4 +16,5 @@
     <%= f.submit "Create password", class: 'btn btn-primary' %>
   </div>
 <% end %>
+
 
